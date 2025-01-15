@@ -1,6 +1,4 @@
-﻿using Core.Interfaces;
-
-namespace Core.Entities;
+﻿namespace Core.Entities;
 
 public class Artist : Entity
 {
@@ -10,6 +8,6 @@ public class Artist : Entity
     public bool isVerified { get; set; }
     public bool Following { get; set; }
 
-    public List<Album> Albums { get; set; }
-    public List<Song> Songs { get; set; }
+    public List<Album> Albums { get; set; }= new();
+    public List<ArtistSong> ArtistSongs { get; set; } = new();
 }

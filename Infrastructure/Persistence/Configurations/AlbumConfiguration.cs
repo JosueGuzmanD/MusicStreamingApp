@@ -4,15 +4,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
 
-public class AlbumConfiguration: IEntityTypeConfiguration<Album>
+public class AlbumConfiguration : BaseEntityConfiguration<Album>
 {
-    public void Configure(EntityTypeBuilder<Album> builder)
+    public override void Configure(EntityTypeBuilder<Album> builder)
     {
-        builder.HasIndex(a=>a.Id);
-        builder.Property(a => a.Id).HasColumnName("AlbumId");
-        
-        
-        
+        base.Configure(builder);
 
+        builder.Property(a => a.Title)
+            .IsRequired()
+            .HasMaxLength(200);
+
+        builder.Property(a => a.ImageUrl)
+            .HasMaxLength(500);
+
+        builder.HasMany(a => a.Songs)
+            .WithOne()
+            .HasForeignKey(s => s.AlbumId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.OwnsOne(a => a.Duration).ConfigureDuration();
     }
 }

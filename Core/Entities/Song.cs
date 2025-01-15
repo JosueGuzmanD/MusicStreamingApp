@@ -1,5 +1,4 @@
-﻿using Core.Interfaces;
-using Core.ValueObjects;
+﻿using Core.ValueObjects;
 
 namespace Core.Entities;
 
@@ -11,5 +10,7 @@ public class Song : Entity
     public bool Explicit { get; set; }
     public double Streams { get; set; }
     public Guid AlbumId { get; set; }
-    public List<Artist> Artists { get; set; }
+    
+    public List<ArtistSong> ArtistSongs { get; set; } = new();
+
 }

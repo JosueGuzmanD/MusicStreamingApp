@@ -12,6 +12,7 @@ public record Duration
             throw new ArgumentException("Duration must be greater than or equal to 0.");
         }
     }
+    private Duration() { }
 
     public int Minutes { get; init; }
     public int Seconds { get; init; }
@@ -19,5 +20,10 @@ public record Duration
     public override string ToString()
     {
         return $"{Minutes}:{Seconds:D2}";
+    }
+
+    public static Duration Create(int minutes, int seconds)
+    {
+        return new Duration(minutes, seconds);
     }
 }
