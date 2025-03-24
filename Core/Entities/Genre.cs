@@ -2,8 +2,8 @@
 
 public class Genre : Entity
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public string Name { get; internal set; }
+    public string Description { get; internal set; }
 
     public List<Song> Songs { get; set; }
     public List<Album> Albums { get; set; }

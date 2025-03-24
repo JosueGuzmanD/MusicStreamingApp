@@ -10,7 +10,9 @@ public class Song : Entity
     public bool Explicit { get; set; }
     public double Streams { get; set; }
     public Guid AlbumId { get; set; }
+    public Guid ArtistId { get; set; }
     
     public List<ArtistSong> ArtistSongs { get; set; } = new();
+    public List<Artist> Artists { get; set; } = new();
 
 }

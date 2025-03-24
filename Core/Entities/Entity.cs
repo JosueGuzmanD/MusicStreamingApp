@@ -30,4 +30,10 @@ public abstract class Entity
         UpdatedBy = userId;
     }
 
+    protected static T EnsureNotNull<T>(T value, string paramName)
+    {
+        ArgumentNullException.ThrowIfNull(value,paramName);
+        return value;
+    }
+
 }

@@ -4,18 +4,20 @@ using Core.Interfaces;
 
 namespace Application.Service;
 
-public class ArtistService: IArtistService
+public class ArtistService : IArtistService
 {
     private readonly IRepository<Artist> _repository;
+    private readonly IRepository<Album> _repositoryAlbum;
+    private readonly IRepository<Song> _repositorySong;
 
     public ArtistService(IRepository<Artist> repository)
     {
         _repository = repository;
     }
-    
+
     public async Task<ArtistDto> GetArtistByIdAsync(int id)
     {
-        var artist= await _repository.GetAsync(id);
+        var artist = await _repository.GetAsync(id);
 
         var dto = new ArtistDto
         {
@@ -23,7 +25,7 @@ public class ArtistService: IArtistService
             Description = artist.ArtistDescription,
             Following = artist.Following,
             Name = artist.ArtistName,
-            IsVerified = artist.isVerified
+            IsVerified = artist.IsVerified
         };
 
         return dto;
@@ -42,35 +44,95 @@ public class ArtistService: IArtistService
                 Description = artist.ArtistDescription,
                 Following = artist.Following,
                 Name = artist.ArtistName,
-                IsVerified = artist.isVerified
+                IsVerified = artist.IsVerified
             };
             dtoList.Add(dto);
         }
+
         return dtoList;
     }
 
-    public Task<List<ArtistDto>> GetAllArtistsByNameAsync(string name)
+    public async Task<List<ArtistDto>> GetAllArtistsByNameAsync(string name)
     {
-        throw new NotImplementedException();
+        var artists = await _repository.FindAsync(a => a.ArtistName.Contains(name, StringComparison.OrdinalIgnoreCase));
+
+        return artists.Select(x => new ArtistDto
+        {
+            Id = x.Id,
+            Description = x.ArtistDescription,
+            Following = x.Following,
+            Name = x.ArtistName,
+            IsVerified = x.IsVerified
+        }).ToList();
     }
 
-    public Task<List<ArtistDto>> GetFollowedArtistsAsync()
+    public async Task<List<ArtistDto>> GetFollowedArtistsAsync()
     {
-        throw new NotImplementedException();
+        var followedArtist = await _repository.FindAsync(x => x.Following == true);
+        return followedArtist.Select(x => new ArtistDto
+        {
+            Id = x.Id,
+            Description = x.ArtistDescription,
+            Following = x.Following,
+            Name = x.ArtistName,
+            IsVerified = x.IsVerified
+        }).ToList();
     }
 
-    public Task<List<ArtistDto>> GetVerifiedArtistsAsync()
+    public async Task<List<ArtistDto>> GetVerifiedArtistsAsync()
     {
-        throw new NotImplementedException();
+        var verifiedArtist= await _repository.FindAsync(x=> x.IsVerified == true);
+
+        return verifiedArtist.Select(x => new ArtistDto
+        {
+            Id = x.Id,
+            Description = x.ArtistDescription,
+            Following = x.Following,
+            Name = x.ArtistName,
+            IsVerified = x.IsVerified
+        }).ToList();
     }
 
-    public Task<List<ArtistDto>> GetArtistByAlbumIdAsync(int id)
+    public async Task<List<ArtistDto>> GetArtistByAlbumIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var album = await _repositoryAlbum.GetAsync(id);
+        
+        if (album == null)
+        {
+            throw new KeyNotFoundException($"Not album found with id {id}.");
+        }
+
+        var artist = await _repository.FindAsync(x => x.Id == album.ArtistId);
+
+        return artist.Select(x => new ArtistDto
+        {
+            Id = x.Id,
+            Description = x.ArtistDescription,
+            Following = x.Following,
+            Name = x.ArtistName,
+            IsVerified = x.IsVerified
+        }).ToList();
+
     }
 
-    public Task<List<ArtistDto>> GetArtistBySongIdAsync(int id)
+    public async Task<List<ArtistDto>> GetArtistBySongIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var song = await _repositorySong.GetAsync(id);
+
+        if (song == null)
+        {
+            throw new KeyNotFoundException($"Not song found with id {id}.");
+        }
+        
+        var artist= await _repository.FindAsync(x=> x.Id== song.ArtistId);
+
+        return artist.Select(x => new ArtistDto
+        {
+            Id = x.Id,
+            Description = x.ArtistDescription,
+            Following = x.Following,
+            Name = x.ArtistName,
+            IsVerified = x.IsVerified
+        }).ToList();
     }
 }

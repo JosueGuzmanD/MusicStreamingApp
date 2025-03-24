@@ -11,7 +11,7 @@ public class ArtistSongConfiguration: IEntityTypeConfiguration<ArtistSong>
         builder.HasKey(asset => new { asset.ArtistId, asset.SongId });
         
         builder.HasOne(a=>a.Artist)
-            .WithMany(s=>s.ArtistSongs)
+            .WithMany(s=>s.Songs)
             .HasForeignKey(a => a.ArtistId)
             .OnDelete(DeleteBehavior.Cascade);
         
