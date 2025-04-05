@@ -42,6 +42,14 @@ public class Album : Entity
         return CalculateDuration();
     }
 
+    public void RemoveSong(Song song)
+    {
+        if (song == null)
+        {
+            throw new ArgumentNullException(nameof(song), "Song cannot be null.");
+        }
+        Songs.Remove(song);
+    }
     private Duration CalculateDuration()
     {
         var totalMinutes = Songs.Sum(s => s.Duration.Minutes);

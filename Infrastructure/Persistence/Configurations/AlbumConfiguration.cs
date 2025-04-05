@@ -21,7 +21,5 @@ public class AlbumConfiguration : BaseEntityConfiguration<Album>
             .WithOne()
             .HasForeignKey(s => s.AlbumId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.OwnsOne(a => a.Duration).ConfigureDuration();
     }
 }

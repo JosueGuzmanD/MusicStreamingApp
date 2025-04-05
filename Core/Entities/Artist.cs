@@ -6,8 +6,6 @@ public class Artist : Entity
     public string? ArtistDescription { get; private set; }
     public string ArtistImage { get; private set; }
     public bool IsVerified { get; private set; }
-    public bool Following { get; private set; }
-
     public List<Album> Albums { get; private set; } = new();
     public List<Song> Songs { get; private set; } = new();
     
@@ -42,12 +40,7 @@ public class Artist : Entity
     {
         Songs.Add(EnsureNotNull(song, nameof(song)));
     }
-
-    public void FollowArtist(Artist artist)
-    {
-        EnsureNotNull(artist, nameof(artist));
-        Following = true;
-    }
+    
 
     public void ChangeImage(string image)
     {
