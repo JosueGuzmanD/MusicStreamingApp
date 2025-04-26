@@ -23,7 +23,6 @@ public class ArtistService : IArtistService
         {
             Id = artist.Id,
             Description = artist.ArtistDescription,
-            Following = artist.Following,
             Name = artist.ArtistName,
             IsVerified = artist.IsVerified
         };
@@ -42,7 +41,6 @@ public class ArtistService : IArtistService
             {
                 Id = artist.Id,
                 Description = artist.ArtistDescription,
-                Following = artist.Following,
                 Name = artist.ArtistName,
                 IsVerified = artist.IsVerified
             };
@@ -60,24 +58,11 @@ public class ArtistService : IArtistService
         {
             Id = x.Id,
             Description = x.ArtistDescription,
-            Following = x.Following,
             Name = x.ArtistName,
             IsVerified = x.IsVerified
         }).ToList();
     }
-
-    public async Task<List<ArtistDto>> GetFollowedArtistsAsync()
-    {
-        var followedArtist = await _repository.FindAsync(x => x.Following == true);
-        return followedArtist.Select(x => new ArtistDto
-        {
-            Id = x.Id,
-            Description = x.ArtistDescription,
-            Following = x.Following,
-            Name = x.ArtistName,
-            IsVerified = x.IsVerified
-        }).ToList();
-    }
+    
 
     public async Task<List<ArtistDto>> GetVerifiedArtistsAsync()
     {
@@ -87,7 +72,6 @@ public class ArtistService : IArtistService
         {
             Id = x.Id,
             Description = x.ArtistDescription,
-            Following = x.Following,
             Name = x.ArtistName,
             IsVerified = x.IsVerified
         }).ToList();
@@ -108,7 +92,6 @@ public class ArtistService : IArtistService
         {
             Id = x.Id,
             Description = x.ArtistDescription,
-            Following = x.Following,
             Name = x.ArtistName,
             IsVerified = x.IsVerified
         }).ToList();
@@ -124,13 +107,12 @@ public class ArtistService : IArtistService
             throw new KeyNotFoundException($"Not song found with id {id}.");
         }
         
-        var artist= await _repository.FindAsync(x=> x.Id== song.ArtistId);
+        var artist= await _repository.FindAsync(x=> x.Id== song.MainArtistId);
 
         return artist.Select(x => new ArtistDto
         {
             Id = x.Id,
             Description = x.ArtistDescription,
-            Following = x.Following,
             Name = x.ArtistName,
             IsVerified = x.IsVerified
         }).ToList();

@@ -10,10 +10,10 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
     {
         builder.HasKey(u => u.Id);
 
-        builder.Property(u => u.FirstName)
+        builder.Property(u => u.FullName.FirstName)
             .HasMaxLength(50);
 
-        builder.Property(u => u.LastName)
+        builder.Property(u => u.FullName.LastName)
             .HasMaxLength(50);
 
         builder.OwnsOne(u => u.Address, address =>
