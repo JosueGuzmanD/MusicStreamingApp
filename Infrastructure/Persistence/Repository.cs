@@ -19,6 +19,10 @@ public class Repository<T> : IRepository<T> where T : class
     {
         _dbSet.Add(entity);
     }
+    public async Task AddAsync(T entity)
+    {
+        await _dbSet.AddAsync(entity);
+    }
 
     public void Update(T entity)
     {

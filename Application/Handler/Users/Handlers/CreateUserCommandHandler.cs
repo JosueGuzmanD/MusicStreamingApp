@@ -4,7 +4,7 @@ using Core.Interfaces;
 using Core.ValueObjects;
 using Infrastructure;
 
-namespace Application.Handler.Users;
+namespace Application.Handler.Users.Handlers;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
 {
@@ -29,7 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
             request.PhoneNumber,
             address);
 
-          _userRepository.Add(user);
+          await _userRepository.AddAsync(user);
          
          return Guid.Parse(user.Id);
     }
